@@ -75,3 +75,59 @@
 
 -   As your app grows, you will have a lot of these `CREATE` and `ALTER` commands.
 -   ORMs (or more specifically Prisma) maintains all of these for you.
+
+## What is Prisma
+
+**`Prisma ORM` is a next-generation Node.js and TypeScript ORM that unlocks a new level of developer experience when working with databases thanks to its intuitive data model, automated migrations, type-safety & auto-completion.**
+
+1.  **Data model**
+    -   In a single file, define your schema. What it looks like, what tables you have, what field each table has, how are rows related to each other.
+2.  **Automated migrations**
+    -   Prisma generates and runs database migrations based on changes to the Prisma schema.
+3.  **Type Safety**
+
+    -   Prisma generates a type-safe database client based on the Prisma schema.
+
+        ```ts
+        // Non ORM
+        const result: any;
+
+        // ORM
+        const result: User;
+        ```
+
+4.  **Auto-Completion**
+
+    ```ts
+    userDb.find();
+    ```
+
+## Installing prisma in a fresh app
+
+**Let’s create a simple TODO app**
+
+### 1. Initialize an empty Node.js project
+
+```bash
+npm init -y
+```
+
+### 2. Add dependencies
+
+```bash
+npm install prisma typescript ts-node @types/node --save-dev
+```
+
+### 3. Initialize typescript
+
+```bash
+npx tsc --init
+# Change `rootDit` to `src`
+# Change `outDir` to `dist`
+```
+
+### 4. Initialize a fresh prisma project
+
+```bash
+npx prisma init
+```
