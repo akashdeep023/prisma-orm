@@ -131,3 +131,106 @@ npx tsc --init
 ```bash
 npx prisma init
 ```
+
+## Selecting your database
+
+-   Prisma lets you chose between a few databases (MySQL, Postgres, Mongo)
+-   You can update `prisma/schema.prisma` to setup what database you want to use.
+
+    > Also replace the `database url` with your test url for now
+
+    ```prisma
+    generator client {
+        provider = "prisma-client-js"
+        output   = "../src/generated/prisma"
+    }
+
+    datasource db {
+        provider = "postgresql" // Choose DB
+        url      = env("DATABASE_URL") // Replace DB url
+    }
+    ```
+
+    > Good to have the VSCode extension that lets you visualise prisma better **`prisma`**
+
+## Defining your data model
+
+## **Prisma expects you to define the shape of your data in the schema.prisma file (`data-model`).**
+
+-   If your final app will have a Users table, it would look like this in the `schema.prisma` file
+
+    ```prisma
+    model User {
+        id         Int      @id @default(autoincrement())
+        email      String   @unique
+        password   String
+        firstName  String
+        lastName   String
+    }
+    ```
+
+### Assignment
+
+-   Add a Users and a Todo table in your application. Don’t worry about `foreign keys` / `relationships` just yet
+
+    ```
+    // Users            |   // Todos
+    email: string       |   title: string
+    password: string    |   description: string
+    firstName: string   |   done: boolean
+    lastName: string    |   user_id: number
+    ```
+
+    ```prisma
+    // This is your Prisma schema file,
+    // learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+    generator client {
+        provider = "prisma-client-js"
+    }
+
+    datasource db {
+        provider = "postgresql"
+        url      = env("DATABASE_URL")
+    }
+
+    model User {
+        id         Int      @id @default(autoincrement())
+        email      String   @unique
+        firstName  String?
+        lastName   String?
+        password   String
+    }
+
+    model Todo {
+        id          Int     @id @default(autoincrement())
+        title       String
+        description String
+        done        Boolean @default(false)
+        userId      Int
+    }
+    ```
+
+### Generate migrations
+
+-   You have created a single schema file. You haven’t yet run the `CREATE TABLE` commands. To run those and create `migration files` , run
+
+    ```bash
+    npx prisma migrate dev --name Initialize the schema
+    ```
+
+-   Your DB should now have the updated schema.
+
+    > Check the `prisma/migrations` folder and check if you see anything interesting in there
+
+## Exploring your database
+
+-   If you have `psql` , try to explore the tables that `prisma` created for you.
+
+    ```bash
+    // Run this in your terminal for Postgres DB connection
+    psql -h localhost -d postgres -U postgres
+
+    // Run this in your terminal for show all tables
+    \dt;
+    ```
