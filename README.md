@@ -260,3 +260,52 @@ npx prisma init
     ```bash
     npx prisma generate
     ```
+
+## Creating your first app
+
+### Insert
+
+-   Write a function that let’s you insert data in the Users table.
+-   Typescript will help you out, here’s a starter code -
+
+    ```ts
+    import { PrismaClient } from "@prisma/client";
+    const prisma = new PrismaClient();
+
+    async function insertUser(
+    	email: string,
+    	password: string,
+    	firstName: string,
+    	lastName: string
+    ) {}
+    ```
+
+### Update
+
+-   Write a function that let’s you update data in the Users table.
+
+    ```ts
+    import { PrismaClient } from "@prisma/client";
+    const prisma = new PrismaClient();
+
+    interface UpdateParams {
+    	firstName: string;
+    	lastName: string;
+    }
+
+    async function updateUser(
+    	email: string,
+    	{ firstName, lastName }: UpdateParams
+    ) {}
+    ```
+
+### Get a user’s details
+
+-   Write a function that let’s you fetch the details of a user given their email
+
+    ```ts
+    import { PrismaClient } from "@prisma/client";
+    const prisma = new PrismaClient();
+
+    async function getUser(email: string) {}
+    ```
