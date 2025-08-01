@@ -234,3 +234,29 @@ npx prisma init
     // Run this in your terminal for show all tables
     \dt;
     ```
+
+## Generating the prisma client
+
+### What is a client?
+
+-   A client is a library that lets you connect to your database and run queries on it.
+
+    ```ts
+    // Client represents all the functions that convert
+    User.create({ email: "jack@jack.com" });
+    ```
+
+    ```ts
+    // into SQL queries
+    INSERT INTO users VALUES ("jack@jack.com")
+    ```
+
+    > Once you’ve created the `prisma/schema.prisma` , you can generate these `clients` that you can use in your Node.js app
+
+### How to generate the client?
+
+-   This generates a new client for you.
+
+    ```bash
+    npx prisma generate
+    ```
