@@ -2,10 +2,10 @@
 
 ## What are ORMs
 
-1. **Boring official defination**
+1. **Boring official definition**
     - ORM stands for Object-Relational Mapping, a programming technique used in software development to convert data between incompatible type systems in object-oriented programming languages. This technique creates a "virtual object database" that can be used from within the programming language.
     - ORMs are used to abstract the complexities of the underlying database into simpler, more easily managed objects within the code
-2. **Easier to digest defination**
+2. **Easier to digest definition**
     - ORMs let you easily interact with your database without worrying too much about the underlying syntax (SQL language for eg)
 
 ## Why ORMs?
@@ -122,7 +122,7 @@ npm install prisma typescript ts-node @types/node --save-dev
 
 ```bash
 npx tsc --init
-# Change `rootDit` to `src`
+# Change `rootDir` to `src`
 # Change `outDir` to `dist`
 ```
 
@@ -134,7 +134,7 @@ npx prisma init
 
 ## Selecting your database
 
--   Prisma lets you chose between a few databases (MySQL, Postgres, Mongo)
+-   Prisma lets you choose between a few databases (MySQL, Postgres, Mongo)
 -   You can update `prisma/schema.prisma` to setup what database you want to use.
 
     > Also replace the `database url` with your test url for now
@@ -155,7 +155,7 @@ npx prisma init
 
 ## Defining your data model
 
-## **Prisma expects you to define the shape of your data in the schema.prisma file (`data-model`).**
+### **Prisma expects you to define the shape of your data in the schema.prisma file (`data-model`).**
 
 -   If your final app will have a Users table, it would look like this in the `schema.prisma` file
 
@@ -308,4 +308,106 @@ npx prisma init
     const prisma = new PrismaClient();
 
     async function getUser(email: string) {}
+    ```
+
+## Relationships
+
+-   **Prisma let’s you define `relationships` to relate tables with each other.**
+
+### Types of relationships
+
+1. One to One
+2. One to Many
+3. Many to One
+4. Many to Many
+
+### For the TODO app, there is a one to many relationship
+
+-   A user can have many todos and a todo belongs to only one user.
+-   One to Many relationship in Prisma
+
+### Updating the prisma schema
+
+-   Update the `prisma/schema.prisma` file
+
+    ```prisma
+    model User {
+        id         Int      @id @default(autoincrement())
+        username   String   @unique
+        password   String
+        firstName  String
+        lastName   String
+        todos      Todo[] // one to many
+    }
+
+    model Todo {
+        id          Int     @id @default(autoincrement())
+        title       String
+        description String
+        done        Boolean @default(false)
+        userId      Int
+        user        User    @relation(fields: [userId], references: [id]) // many to one
+    }
+    ```
+
+### Update the `database` and the `prisma client`
+
+-   Run the following commands to update the database and the prisma client
+
+    ```bash
+    # Update the database
+    npx prisma migrate dev --name relationship
+
+    # Update the prisma client
+    npx prisma generate
+    ```
+
+    > Try exploring the `prisma/migrations` folder now. Do you see more `migrations` for the newly created realtiohsip
+
+## Todo functions
+
+### insertTodo
+
+-   Write a function that let’s you put a todo in the database.
+-   Starter code -
+
+    ```ts
+    import { PrismaClient } from "@prisma/client";
+    const prisma = new PrismaClient();
+
+    async function insertTodo(
+    	userId: number,
+    	title: string,
+    	description: string
+    ) {}
+
+    insertTodo(1, "go to gym", "go to gym and do 10 pushups");
+    ```
+
+### getTodos
+
+-   Write a function to get all the todos for a user.
+-   Starter code
+
+    ```ts
+    import { PrismaClient } from "@prisma/client";
+    const prisma = new PrismaClient();
+
+    async function getTodos(userId: number) {}
+
+    getTodos(1);
+    ```
+
+### getTodosAndUserDetails (Does/should it use `joins`?)
+
+-   Write a function that gives you the todo details of a user along with the user details
+-   Starter Code
+
+    ```ts
+    import { PrismaClient } from "@prisma/client";
+    const prisma = new PrismaClient();
+
+    async function getTodosAndUserDetails(userId: number) {}
+
+    getTodosAndUserDetails(1);
     ```

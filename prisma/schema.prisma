@@ -20,6 +20,7 @@ model User {
   firstName  String?
   lastName   String?
   password   String
+  todo       Todo[] // One to many
 }
 
 model Todo {
@@ -28,4 +29,5 @@ model Todo {
   description String
   done        Boolean @default(false)
   userId      Int
+  user        User    @relation(fields: [userId], references: [id]) // Many to one
 }
